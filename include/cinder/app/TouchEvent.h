@@ -37,7 +37,11 @@ class TouchEvent : public Event {
 	  public:
 		Touch() {}
 		Touch( const vec2 &pos, const vec2 &prevPos, uint32_t id, double time, void *native )
-			: mPos( pos ), mPrevPos( prevPos ), mId( id ), mTime( time ), mNative( native ), mHandled( false )
+			: mPos( pos ), mPrevPos( prevPos ), mPressure( 0.0f ), mId( id ), mTime( time ), mNative( native ), mHandled( false )
+		{}
+        
+        Touch( const vec2 &pos, const vec2 &prevPos, float pressure, uint32_t id, double time, void *native )
+			: mPos( pos ), mPrevPos( prevPos ), mPressure( pressure ), mId( id ), mTime( time ), mNative( native ), mHandled( false )
 		{}
 
 		//! Returns whether this Touch has been marked as handled.
@@ -47,7 +51,9 @@ class TouchEvent : public Event {
 		//! Returns the x position of the touch measured in points
 		float		getX() const { return mPos.x; }
 		//! Returns the y position of the touch measured in points
-		float		getY() const { return mPos.y; }		
+		float		getY() const { return mPos.y; }
+		//! Returns the pressure of the touch, returns 0.0f if unavalable
+		float		getPressure() const { return mPressure; }
 		//! Returns the position of the touch measured in points
 		vec2		getPos() const { return mPos; }
 		//! Sets the position of the touch measured in points
@@ -67,6 +73,7 @@ class TouchEvent : public Event {
 		
 	  private:
 		vec2		mPos, mPrevPos;
+		float		mPressure;
 		uint32_t	mId;
 		bool        mHandled;
 		double		mTime;

@@ -146,13 +146,28 @@ static bool sIsEaglLayer;
 		return found->second;
 }
 
+- (float)getTouchPressure:(UITouch*)touch
+{
+	@try
+	{
+		CGFloat force = touch.force;
+		CGFloat maxForce = touch.maximumPossibleForce;
+		return force / maxForce;
+	}
+	@catch (NSException* event) {}
+	@finally {}
+
+	return 0.0f;
+}
+
 - (void)updateActiveTouches
 {
 	mActiveTouches.clear();
 	for( const auto &touch : mTouchIdMap ) {
 		CGPoint pt = [touch.first locationInView:self];
 		CGPoint prevPt = [touch.first previousLocationInView:self];
-		mActiveTouches.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), touch.second, [touch.first timestamp], touch.first ) );
+		float   pressure = [self getTouchPressure:touch.first];
+		mActiveTouches.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), pressure, touch.second, [touch.first timestamp], touch.first ) );
 	}
 }
 
@@ -166,7 +181,8 @@ static bool sIsEaglLayer;
 		for( UITouch *touch in touches ) {
 			CGPoint pt = [touch locationInView:self];
 			CGPoint prevPt = [touch previousLocationInView:self];
-			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), [self addTouchToMap:touch], [touch timestamp], touch ) );
+			float   pressure = [self getTouchPressure:touch];
+			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), pressure, [self addTouchToMap:touch], [touch timestamp], touch ) );
 		}
 		[self updateActiveTouches];
 		if( ! touchList.empty() ) {
@@ -191,8 +207,9 @@ static bool sIsEaglLayer;
 		std::vector<TouchEvent::Touch> touchList;
 		for( UITouch *touch in touches ) {
 			CGPoint pt = [touch locationInView:self];
-			CGPoint prevPt = [touch previousLocationInView:self];			
-			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), [self findTouchInMap:touch], [touch timestamp], touch ) );
+			CGPoint prevPt = [touch previousLocationInView:self];
+			float   pressure = [self getTouchPressure:touch];
+			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), pressure, [self findTouchInMap:touch], [touch timestamp], touch ) );
 		}
 		[self updateActiveTouches];
 		if( ! touchList.empty() ) {
@@ -218,7 +235,8 @@ static bool sIsEaglLayer;
 		for( UITouch *touch in touches ) {
 			CGPoint pt = [touch locationInView:self];
 			CGPoint prevPt = [touch previousLocationInView:self];
-			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), [self findTouchInMap:touch], [touch timestamp], touch ) );
+			float   pressure = [self getTouchPressure:touch];
+			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), pressure, [self findTouchInMap:touch], [touch timestamp], touch ) );
 			[self removeTouchFromMap:touch];
 		}
 		[self updateActiveTouches];
