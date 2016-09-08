@@ -37,7 +37,7 @@ class TouchEvent : public Event {
 	  public:
 		Touch() {}
 		Touch( const vec2 &pos, const vec2 &prevPos, uint32_t id, double time, void *native )
-			: mPos( pos ), mPrevPos( prevPos ), mPressure( 0.0f ), mId( id ), mTime( time ), mNative( native ), mHandled( false )
+			: mPos( pos ), mPrevPos( prevPos ), mPressure( 1.0f ), mId( id ), mTime( time ), mNative( native ), mHandled( false )
 		{}
         
         Touch( const vec2 &pos, const vec2 &prevPos, float pressure, uint32_t id, double time, void *native )

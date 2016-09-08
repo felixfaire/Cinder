@@ -148,16 +148,14 @@ static bool sIsEaglLayer;
 
 - (float)getTouchPressure:(UITouch*)touch
 {
-	@try
+	if (touch.view.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
 	{
 		CGFloat force = touch.force;
 		CGFloat maxForce = touch.maximumPossibleForce;
 		return force / maxForce;
 	}
-	@catch (NSException* event) {}
-	@finally {}
 
-	return 0.0f;
+	return 1.0f;
 }
 
 - (void)updateActiveTouches

@@ -63,6 +63,7 @@
 - (uint32_t)addTouchToMap:(UITouch *)touch;
 - (void)removeTouchFromMap:(UITouch *)touch;
 - (uint32_t)findTouchInMap:(UITouch *)touch;
+- (float)getTouchPressure:(UITouch*)touch;
 - (void)updateActiveTouches;
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event;
 - (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches;
