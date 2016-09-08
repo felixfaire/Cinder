@@ -52,7 +52,7 @@ class TouchEvent : public Event {
 		float		getX() const { return mPos.x; }
 		//! Returns the y position of the touch measured in points
 		float		getY() const { return mPos.y; }
-		//! Returns the pressure of the touch, returns 0.0f if unavalable
+		//! Returns the pressure of the touch, returns 1.0f if unavalable
 		float		getPressure() const { return mPressure; }
 		//! Returns the position of the touch measured in points
 		vec2		getPos() const { return mPos; }
